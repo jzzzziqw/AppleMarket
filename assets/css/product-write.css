@@ -1,0 +1,93 @@
+.file-label {
+  margin-top: 30px;
+  background-color: #FF6C64 ;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+  width: 200px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.file {
+  display: none;
+}
+
+.upload-box {
+  width: 100%;
+  box-sizing: border-box;
+  margin-right: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: left;
+}
+
+.upload-box .drag-file {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 3px dashed #dbdbdb;
+}
+
+.upload-box .drag-file.highlight {
+  border: 3px dashed red;
+}
+
+.upload-box .drag-file .image {
+  width: 40px;
+}
+
+.upload-box .drag-file .message {
+  margin-bottom: 0;
+}
+
+.upload-box .drag-file .preview {
+  display: none;
+  position: absolute;
+  left: 0;
+  height: 0;
+  width: auto;
+  height: auto;
+}
+
+.file-label1::file-selector-button {
+  display: none;
+}
+
+.write {
+  -webkit-writing-mode: horizontal-tb !important;
+  text-rendering: auto;
+  color: #081828;
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-transform: none;
+  text-indent: 0px;
+  text-shadow: none;
+  display: inline-block;
+  text-align: start;
+  -webkit-appearance: menulist;
+  -moz-appearance: menulist;
+  appearance: menulist;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  white-space: pre;
+  -webkit-rtl-ordering: logical;
+  background-color: -internal-light-dark(white, #3b3b3b);
+  cursor: default;
+  margin: 0em;
+  font: 400 14px;
+  border-radius: 0px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: -internal-light-dark(#767676, #858585);
+  -o-border-image: initial;
+  border-image: initial;
+}

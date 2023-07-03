@@ -1,0 +1,93 @@
+<?php session_start(); ?>
+<?php
+    include('./dbconn.php');
+    $dbconn = dbconn();
+
+    // 사용자가 로그인했는지 확인합니다.
+    if (!isset($_SESSION['id'])) {
+        echo "<script>alert( '로그인되지 않았습니다.'); history.back();</script>";
+        header("Location: login.html");
+        exit;
+    }
+
+    // 로그인한 사용자의 ID를 가져옵니다.
+    $user_id = $_SESSION['id'];
+    $product_id = $_GET['product_id'];
+
+    // POST 요청에서 제품 데이터를 가져옵니다.
+    $title = $_POST["title"]; //title
+    $favorite = $_POST["favorite"]; //favoriteTbl_idx
+    $comment = htmlspecialchars($_POST["comment"], ENT_QUOTES, 'UTF-8');//commentTbl_idx
+    if ($title === "" || $favorite === "" || $comment === "") {
+        echo "<script>alert('빈칸이 있습니다.'); history.back();</script>";
+    } else {
+        mysqli_autocommit($dbconn, false);
+    }
+
+    $user_idx_query = "SELECT idx FROM userTbl WHERE id = ?";
+    $stmt_user_idx = mysqli_prepare($dbconn, $user_idx_query);
+    if ($stmt_user_idx === false) {
+        echo "에러: 사용자 인덱스 쿼리 준비에 실패했습니다.";
+        exit;
+    }
+    mysqli_stmt_bind_param($stmt_user_idx, "s", $user_id);
+    $result_user_idx = mysqli_stmt_execute($stmt_user_idx);
+    if ($result_user_idx === false) {
+        echo "에러: 사용자 인덱스 쿼리 실행에 실패했습니다.";
+        exit;
+    }
+    $user_idx_result = mysqli_stmt_get_result($stmt_user_idx);
+
+    if ($user_idx_result) {
+        $user_idx_row = mysqli_fetch_assoc($user_idx_result);
+        $user_idx = $user_idx_row['idx'];
+
+        $getRegProductSql = "SELECT favorite FROM RegProductTbl WHERE idx = ?";
+        $stmt_getRegProduct = mysqli_prepare($dbconn, $getRegProductSql);
+        if ($stmt_getRegProduct === false) {
+            echo "에러: 제품 조회 쿼리 준비에 실패했습니다.";
+            exit;
+        }
+        mysqli_stmt_bind_param($stmt_getRegProduct, "i", $product_id);
+        $result_getRegProduct = mysqli_stmt_execute($stmt_getRegProduct);
+        if ($result_getRegProduct === false) {
+            echo "에러: 제품 조회 쿼리 실행에 실패했습니다.";
+            exit;
+        }
+        $getRegProductResult = mysqli_stmt_get_result($stmt_getRegProduct);
+        $getRegProductRow = mysqli_fetch_assoc($getRegProductResult);
+        $existingFavorite = $getRegProductRow['favorite'];
+
+        // favorite 값과 새로운 값을 평균하여 업데이트합니다.
+        $newFavorite = ($existingFavorite + $favorite) / 2;
+        $updateRegProductSql = "UPDATE RegProductTbl SET favorite = ? WHERE idx = ?";
+        $stmt_updateRegProduct = mysqli_prepare($dbconn, $updateRegProductSql);
+        if ($stmt_updateRegProduct === false) {
+            echo "에러: 제품 업데이트 쿼리 준비에 실패했습니다.";
+            exit;
+        }
+        mysqli_stmt_bind_param($stmt_updateRegProduct, "di", $newFavorite, $product_id);
+        $result_updateRegProduct = mysqli_stmt_execute($stmt_updateRegProduct);
+        if ($result_updateRegProduct === false) {
+            echo "에러: 제품 업데이트 쿼리 실행에 실패했습니다.";
+            exit;
+        }
+
+        $updateCommentSql = "INSERT INTO comment (title, comment, RegProductTbl_idx, userTbl_idx, commentDate) VALUES (?, ?, ?, ?, NOW())";
+        $stmt_updateComment = mysqli_prepare($dbconn, $updateCommentSql);
+        if ($stmt_updateComment === false) {
+            echo "에러: " . mysqli_error($dbconn);
+            exit;
+        }
+        mysqli_stmt_bind_param($stmt_updateComment, "ssii", $title, $comment, $product_id, $user_idx); // 수정된 부분
+        $result_updateComment = mysqli_stmt_execute($stmt_updateComment);
+
+        mysqli_commit($dbconn);
+        echo "<script>alert('후기 등록이 완료되었습니다.'); history.back();</script>";
+    } else {
+        mysqli_rollback($dbconn);
+        echo "에러: 후기 등록에 실패하였습니다.";
+    }
+
+    mysqli_autocommit($dbconn, true);
+?>

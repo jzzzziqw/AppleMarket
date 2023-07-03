@@ -1,0 +1,191 @@
+html {
+  min-width: 350px;
+}
+
+body {
+  background-color: aliceblue;
+}
+
+.container {
+  height: 100vh;
+  padding: 20px;
+  text-align: -webkit-center;
+}
+
+.chat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  height: 100%;
+  background-color: white;
+  border: 1px solid #dee2e6;
+  border-radius: 1em;
+}
+
+#message-container {
+  flex-basis: 90%;
+  width: 100%;
+  min-height: 100px;
+  overflow: auto;
+  text-align: -webkit-center;
+  background-color: rgb(178, 199, 217);
+  border-radius: 1em 1em 0 0;
+}
+
+#message-container > div {
+  display: table;
+  max-width: 60%;
+  margin: 10px;
+  text-align: left;
+  word-wrap: break-word;
+  word-break: break-all;
+}
+
+#message-container > div.me {
+  margin-left: auto;
+  background-color: rgb(255, 235, 51);
+  border: 1px solid #dee2e6;
+}
+
+#message-container > div.other {
+  position: relative;
+  margin-right: auto;
+}
+
+.other .namentime {
+  position: relative;
+  left: 60px;
+  padding: 5px;
+  background-color: #fff;
+  border: 1px solid #dee2e6;
+}
+
+#message-container div.info {
+  padding: 5px;
+  color: gray;
+  font-size: 9px;
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.671);
+  border-radius: 3px;
+}
+
+.other .profileimg {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  font-size: xx-large;
+  text-align: -webkit-center;
+  border-radius: 1em;
+  place-content: center;
+}
+
+.other .time {
+  position: absolute;
+  right: -30px;
+  bottom: 0px;
+  font-size: 0.2em;
+}
+
+.me,
+.other .namentime {
+  border-radius: 5px;
+}
+
+.me {
+  position: relative;
+  padding: 5px;
+  background-color: rgb(255, 235, 51);
+  border: 1px solid #dee2e6;
+}
+
+.me .time {
+  position: absolute;
+  bottom: 0px;
+  left: -30px;
+  font-size: 0.2em;
+}
+
+.other .uname {
+  font-weight: bold;
+}
+
+#send-container {
+  display: flex;
+  flex-basis: 10%;
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+}
+
+#send-container input,
+#send-container button {
+  height: 100%;
+}
+
+#send-container input {
+  flex-basis: 90%;
+}
+#send-container button {
+  flex-basis: 10%;
+}
+
+/* scroll bar */
+
+#message-container::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+#message-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+#message-container::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+#message-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* 프사 없애기 */
+
+@media (max-width: 400px) {
+  .other .namentime {
+    left: 0;
+  }
+
+  .other .profileimg {
+    display: none;
+  }
+}
+
+/* user_list */
+
+#user-list {
+  position: absolute;
+  left: -210px;
+  width: 200px;
+}
+
+#user-list .list-group-item {
+  padding: 1px;
+}
+
+#user-list .list-group-item.head {
+  padding: 3px;
+  color: gray;
+  font-weight: bold;
+  background-color: rgb(230 237 242);
+}
+
+@media (max-width: 927px) {
+  #user-list {
+    display: none;
+  }
+}
